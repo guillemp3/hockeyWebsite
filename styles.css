@@ -1,0 +1,99 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    width: 100%;
+    background-color: #AF1E2D;
+    color: white;
+    padding: 20px;
+    margin: 0;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#contentBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#habsBtn {
+    margin: 20px auto;
+    padding: 10px 20px;
+    display: block;
+}
+
+#leftBox, #rightBox {
+    margin: 20px;
+}
+
+#buttonBox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+#nameBox {
+    text-align: center;
+    min-width: 200px;
+}
+
+#photoVisage{
+align-items: center;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #710f0f;
+    color: white;
+    border: none;
+    border-radius: 10px;
+}
+
+#prevPlayerBtn, #nextPlayerBtn {
+    width: 100px;
+    display: none;
+    text-align: center;
+}
+
+#nameBox{
+    text-align: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+    font-family: sans-serif;
+    min-width: 400px;
+    border: 2px solid black;
+    border-radius: 10px;
+}
+
+#leftBox{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+#rightBox{
+    display:none;
+    font-family: sans-serif;
+    font-size: 50px;
+    font-weight: bold;
+    color: white;
+    border: 2px solid black;
+    background-color: #AF1E2D;
+    border-radius: 10px;
+    padding: 20px;
+    min-width: 200px;
+    height: fit-content;
+    text-align: center;
+    min-width: 500px;
+}
