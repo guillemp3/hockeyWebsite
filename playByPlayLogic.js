@@ -19,10 +19,13 @@ async function getPlayByPLayInfo(id){
     }
 };
 
-
+let temps = 1;
 function displayLiveInfo(info){
+    temps++;
     teamsPlaying = document.getElementById("teams");
+    periodeActuelle = document.getElementById("period")
     teamsPlaying.textContent = `${info.awayTeam.abbrev} @ ${info.homeTeam.abbrev}`;
+    periodeActuelle.textContent = `PÉRIODE ${info.displayPeriod}  ${info.clock.timeRemaining}`;
 
 
 };
@@ -30,7 +33,7 @@ function displayLiveInfo(info){
 
 function run(){
     console.log("allo")
-    setInterval(() => getPlayByPLayInfo(2025020270), 5000);
+    setInterval(() => getPlayByPLayInfo(2025020270), 1000);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
