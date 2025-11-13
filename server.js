@@ -38,6 +38,32 @@ app.get('/api/habs', async (req, res) => {
     }
 });
 
+// play by play API endpoint (need to pass an actual game ID)
+app.get('/api/playbyplay/:gameId', async (req, res) => {
+  try {
+    const { gameId } = req.params;
+
+    if (!/^\d{10}$/.test(gameId)) {
+      return res.status(400).json({ error: 'Invalid game ID format' });
+    }
+
+    const url = `https://api-web.nhle.com/v1/gamecenter/${gameId}/play-by-play`;
+
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`NHL API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+
+  } catch (error) {
+    console.error('Error fetching play-by-play:', error);
+    res.status(500).json({ error: 'Failed to fetch play-by-play data' });
+  }
+});
+
+
 // Serve index.html for the root route
 app.get('/', (req, res) => {
     res.sendFile(join(__dirname, 'index.html'));

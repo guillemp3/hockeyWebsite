@@ -56,11 +56,9 @@ async function getHabsData(playerNumber) {
 function generateStats(goals, assists, points, plusMinus, pim, gamesPlayed){
     statBox = document.getElementById("rightBox");
     statBox.innerHTML = `
-    <p>${goals}G   ${assists}A   ${points}P   ${gamesPlayed}GP</p>`;
+    <p>${goals}G   ${assists}A
+       ${points}P   ${gamesPlayed}GP</p>`;
 }
- // <p>Buts: <strong>${goals}       +/-: <strong>${plusMinus}</strong> <br> </strong> Passes: <strong>${assists}</strong>       
-    // PIM: <strong>${pim}</strong>  <br> Points: <strong>${points}</strong>       Parties jouées: <strong>${gamesPlayed}</strong></p>
-    // `
 
 currPlayerNumber = 0;
 
@@ -100,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (habsButton) {
         habsButton.addEventListener('click', () => {
             getHabsData(currPlayerNumber);
+            // getPlayByPLay(2025020270);
             next.style.display = "block";
             prev.style.display = "block";
             leftBox.style.display = "flex";
@@ -109,4 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // const liveDataBtn = document.getElementById('liveDataBtn');
+    // if (liveDataBtn) {
+    //     liveDataBtn.addEventListener('click', () => {
+    //         getPlayByPLay(2025020270);
+    //     });
+    // }
 });
