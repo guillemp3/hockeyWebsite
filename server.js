@@ -15,27 +15,27 @@ app.use(express.static('.'));
 
 //standings API endpoint
 app.get('/api/standings', async (req, res) => {
-    try {
-        const response = await fetch('https://api-web.nhle.com/v1/standings/now');
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Failed to fetch standings' });
-    }
+  try {
+    const response = await fetch('https://api-web.nhle.com/v1/standings/now');
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to fetch standings' });
+  }
 });
 
 // habs API endpoint
 app.get('/api/habs', async (req, res) => {
-    try {
-        
-        const response = await fetch('https://api-web.nhle.com/v1/club-stats/MTL/now');
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Failed to fetch habs stats' });
-    }
+  try {
+
+    const response = await fetch('https://api-web.nhle.com/v1/club-stats/MTL/now');
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to fetch habs stats' });
+  }
 });
 
 // play by play API endpoint (need to pass an actual game ID)
@@ -53,7 +53,6 @@ app.get('/api/playbyplay/:gameId', async (req, res) => {
     if (!response.ok) {
       throw new Error(`NHL API returned ${response.status}`);
     }
-
     const data = await response.json();
     res.json(data);
 
@@ -64,11 +63,32 @@ app.get('/api/playbyplay/:gameId', async (req, res) => {
 });
 
 
+//specific player api endpoint
+
+app.get('/api/player/:playerId', async (req, res) => {
+  try {
+    const { playerId } = req.params;
+    const response = await fetch(`https://api-web.nhle.com/v1/player/${playerId}/landing`);
+    if (!response.ok) {
+      throw new Error(`NHL API returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
+
+
+
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Failed to fetch habs stats' });
+  }
+});
+
 // Serve index.html for the root route
 app.get('/', (req, res) => {
-    res.sendFile(join(__dirname, 'index.html'));
+  res.sendFile(join(__dirname, 'index.html'));
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });

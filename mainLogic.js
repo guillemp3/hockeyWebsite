@@ -29,6 +29,7 @@ async function getHabsData(playerNumber) {
         console.log('Habs API response received.');
 
         const Result = await Response.json();
+        console.log(Result);
 
         player = Result.skaters[playerNumber];
 
@@ -53,6 +54,8 @@ async function getHabsData(playerNumber) {
 }
 
 
+
+
 function generateStats(goals, assists, points, plusMinus, pim, gamesPlayed){
     statBox = document.getElementById("rightBox");
     statBox.innerHTML = `
@@ -60,7 +63,7 @@ function generateStats(goals, assists, points, plusMinus, pim, gamesPlayed){
        ${points}P   ${gamesPlayed}GP</p>`;
 }
 
-currPlayerNumber = 0;
+let currPlayerNumber = 0;
 
 //horrible placement
 rightBox = document.getElementById("rightBox");
