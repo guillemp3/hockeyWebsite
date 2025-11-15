@@ -130,3 +130,11 @@ button {
     text-align: center;
     margin: 0;
 }
+#scorers{
+     font-size: 30px;
+    font-weight: bold;
+    font-family: sans-serif;
+    color: #231e1e;
+    text-align: center;
+    margin: 0;
+}

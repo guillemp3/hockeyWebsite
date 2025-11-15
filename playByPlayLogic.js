@@ -1,7 +1,17 @@
+let totalGoals = 0;
+const scorers = [];
 
-let currentScorers = {}
+class PlayerInfo {
+    constructor(id, firstName, lastName, goalsScored = 1) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.goalsScored = goalsScored;
+    }
+}
 
-async function getPlayByPLayInfo(id){
+
+async function getPlayByPLayInfo(id) {
     try {
         const Response = await fetch(`http://localhost:3000/api/playbyplay/${id}`);
         if (!Response.ok) {
@@ -11,7 +21,7 @@ async function getPlayByPLayInfo(id){
 
         const Result = await Response.json();
         displayLiveInfo(Result);
-       
+
     }
     catch (error) {
         console.error(error.message);
@@ -20,62 +30,74 @@ async function getPlayByPLayInfo(id){
     }
 };
 
-async function displayLiveInfo(info){
+async function displayLiveInfo(info) {
     teamsPlaying = document.getElementById("teams");
     periodeActuelle = document.getElementById("period");
     butsMarques = document.getElementById("scorers");
+
     teamsPlaying.textContent = `${info.awayTeam.abbrev} @ ${info.homeTeam.abbrev}`;
-    periodeActuelle.textContent = `PÉRIODE ${info.displayPeriod}  ${info.clock.timeRemaining}`;
-    
-    
-
+    periodeActuelle.innerHTML = `${info.displayPeriod}<sup>${info.displayPeriod > 1 ? "e" : "ère"}</sup> PÉRIODE`;
+ 
     const goalPlays = info.plays.filter(play => play.typeDescKey === "goal");
-     for (const goal of goalPlays) {
-        // console.log("Scorer ID:", goal.details.scoringPlayerId);
-        const player = await getPlayerById(goal.details.scoringPlayerId);
+    const currentGoalCount = goalPlays.length;
 
-        // console.log(`But de ${player.firstName.default} ${player.lastName.default}`);
-
-       //addScorer(scoringPlayerId) ENVOYER UNE SEULE FOIS LE BUT
-        // butsMarques.textContent = ;
-        // displayScorers();
-        // butsMarques.textContent += `But de ${player.firstName.default} ${player.lastName.default}`;
-        
+    if (currentGoalCount === totalGoals) {
+        return; //pour eviter d'update a chaque 5 secondes
     }
-    
-function addScorer(playerId){
-    if (!(currentScorers.includes(playerId)))
-    currentScorers.push(playerId);
+
+    for (const goal of goalPlays) {
+
+        const scorerId = goal.details.scoringPlayerId;
+        const player = await getPlayerById(scorerId);
+
+        addScorer(
+            scorerId,
+            player.firstName.default,
+            player.lastName.default
+        );
+
+        totalGoals = currentGoalCount;
+        displayScorers([...scorers.values()]);
+    }
+   
+
+    function addScorer(id, firstName, lastName) {
+    const previousGoals = scorers.filter(s => s.id === id).length;
+    const newGoalNumber = previousGoals + 1;
+
+    scorers.push(new PlayerInfo(id, firstName, lastName, newGoalNumber));
+}
 };
-function displayScorers(){
-    for(i in currentScorers){
-        console.log(i);
-        butsMarques.textContent+=i;
-    }
+
+
+function displayScorers() {
+    butsMarques.innerHTML = scorers
+        .map(p => `But de ${p.firstName} ${p.lastName} (${p.goalsScored}<sup>${p.goalsScored > 1 ? "e" : "er"}</sup>)`)
+        .join("<br>");
 }
 
 
+async function getPlayerById(id) {
+
+    const Response = await fetch(`http://localhost:3000/api/player/${id}`);
+
+    if (!Response.ok) {
+        throw new Error(`Response status: ${Response.status}`);
+    }
+    const Result = await Response.json(); 
+    return Result;
+
 };
-async function getPlayerById(id){
-   
-    const Response = await  fetch(`http://localhost:3000/api/player/${id}`);
 
-        if (!Response.ok) {
-            throw new Error(`Response status: ${Response.status}`);
-        }
-        const Result = await Response.json();
-        return Result;
-    
-    };
 
-function run(){
+function run() {
+    getPlayByPLayInfo(2025020270);
     setInterval(() => getPlayByPLayInfo(2025020270), 5000);
 };
 
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
-
     run()
-
-
-    
 });
