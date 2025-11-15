@@ -1,4 +1,6 @@
 
+let currentScorers = {}
+
 async function getPlayByPLayInfo(id){
     try {
         const Response = await fetch(`http://localhost:3000/api/playbyplay/${id}`);
@@ -34,13 +36,23 @@ async function displayLiveInfo(info){
 
         // console.log(`But de ${player.firstName.default} ${player.lastName.default}`);
 
-       // addScorer(scoringPlayerId) ENVOYER UNE SEULE FOIS LE BUT
-
+       //addScorer(scoringPlayerId) ENVOYER UNE SEULE FOIS LE BUT
+        // butsMarques.textContent = ;
+        // displayScorers();
         // butsMarques.textContent += `But de ${player.firstName.default} ${player.lastName.default}`;
         
     }
     
-
+function addScorer(playerId){
+    if (!(currentScorers.includes(playerId)))
+    currentScorers.push(playerId);
+};
+function displayScorers(){
+    for(i in currentScorers){
+        console.log(i);
+        butsMarques.textContent+=i;
+    }
+}
 
 
 };
@@ -57,8 +69,7 @@ async function getPlayerById(id){
     };
 
 function run(){
-    console.log("allo")
-    setInterval(() => getPlayByPLayInfo(2025020270), 2000);
+    setInterval(() => getPlayByPLayInfo(2025020270), 5000);
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -66,6 +77,5 @@ document.addEventListener('DOMContentLoaded', () => {
     run()
 
 
-    // getPlayByPLayInfo(2025020270);
     
 });
