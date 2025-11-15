@@ -2,10 +2,14 @@ let totalGoals = 0;
 const scorers = [];
 
 class PlayerInfo {
-    constructor(id, firstName, lastName, goalsScored = 1) {
+    constructor(id, firstName, lastName, headshot, time, period, goalsScored = 1) {
+
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.headshot = headshot;
+        this.time = time;
+        this.period = period;
         this.goalsScored = goalsScored;
     }
 }
@@ -36,8 +40,8 @@ async function displayLiveInfo(info) {
     butsMarques = document.getElementById("scorers");
 
     teamsPlaying.textContent = `${info.awayTeam.abbrev} @ ${info.homeTeam.abbrev}`;
-    periodeActuelle.innerHTML = `${info.displayPeriod}<sup>${info.displayPeriod > 1 ? "e" : "ère"}</sup> PÉRIODE`;
- 
+    periodeActuelle.innerHTML = `${info.displayPeriod}<sup>e</sup> PÉRIODE`;
+
     const goalPlays = info.plays.filter(play => play.typeDescKey === "goal");
     const currentGoalCount = goalPlays.length;
 
@@ -53,27 +57,41 @@ async function displayLiveInfo(info) {
         addScorer(
             scorerId,
             player.firstName.default,
-            player.lastName.default
+            player.lastName.default,
+            player.headshot,
+            goal.timeInPeriod,
+            goal.periodDescriptor.number
         );
 
         totalGoals = currentGoalCount;
         displayScorers([...scorers.values()]);
     }
-   
 
-    function addScorer(id, firstName, lastName) {
-    const previousGoals = scorers.filter(s => s.id === id).length;
-    const newGoalNumber = previousGoals + 1;
 
-    scorers.push(new PlayerInfo(id, firstName, lastName, newGoalNumber));
-}
+    function addScorer(id, firstName, lastName, headshot, time, period) {
+        const previousGoals = scorers.filter(s => s.id === id).length;
+        const newGoalNumber = previousGoals + 1;
+
+        scorers.push(new PlayerInfo(id, firstName, lastName, headshot, time, period, newGoalNumber));
+    }
 };
 
 
 function displayScorers() {
-    butsMarques.innerHTML = scorers
-        .map(p => `But de ${p.firstName} ${p.lastName} (${p.goalsScored}<sup>${p.goalsScored > 1 ? "e" : "er"}</sup>)`)
-        .join("<br>");
+    const scorersContainer = document.getElementById("scorers");
+    scorersContainer.innerHTML = scorers
+        .map(p => `
+            <div class="scorer">
+                <img src="${p.headshot}" alt="${p.firstName} ${p.lastName}" class="scorer-img">
+                <div class="scorer-text">
+                    <div class="main-text">
+                        But de ${p.firstName} ${p.lastName} (${p.goalsScored}<sup>${p.goalsScored > 1 ? "e" : "er"}</sup>)
+                    </div>
+                    <div class="sub-text">${p.time} (en ${p.period}<sup>e</sup> période)</div>
+                </div>
+            </div>
+        `)
+        .join("");
 }
 
 
@@ -84,7 +102,7 @@ async function getPlayerById(id) {
     if (!Response.ok) {
         throw new Error(`Response status: ${Response.status}`);
     }
-    const Result = await Response.json(); 
+    const Result = await Response.json();
     return Result;
 
 };

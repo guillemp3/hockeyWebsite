@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (habsButton) {
         habsButton.addEventListener('click', () => {
             getHabsData(currPlayerNumber);
-            // getPlayByPLay(2025020270);
             next.style.display = "block";
             prev.style.display = "block";
             leftBox.style.display = "flex";
