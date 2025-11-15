@@ -1,7 +1,7 @@
 {
   "name": "hockeywebsite",
   "version": "1.0.0",
-  "description": "",
+  "description": "**Website for quick access to Montreal Canadiens stats.**",
   "main": "test.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -20,8 +20,15 @@
   },
   "homepage": "https://github.com/guillemp3/hockeyWebsite#readme",
   "dependencies": {
+    "@tailwindcss/cli": "^4.1.17",
+    "@tailwindcss/postcss": "^4.1.17",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.22",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17"
   }
 }
