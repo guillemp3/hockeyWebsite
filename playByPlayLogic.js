@@ -22,7 +22,6 @@ async function getPlayByPLayInfo(id) {
             throw new Error(`Response status: ${Response.status}`);
         }
         console.log('PlayByPlay API response received.');
-
         const Result = await Response.json();
         displayLiveInfo(Result);
 
@@ -35,12 +34,20 @@ async function getPlayByPLayInfo(id) {
 };
 
 async function displayLiveInfo(info) {
+
+    //if entracte, hide everything and show new interface
     teamsPlaying = document.getElementById("teams");
     periodeActuelle = document.getElementById("period");
     butsMarques = document.getElementById("scorers");
-
+    const penaltyBox = document.getElementById("penaltyBox")
     teamsPlaying.textContent = `${info.awayTeam.abbrev} @ ${info.homeTeam.abbrev}`;
-    periodeActuelle.innerHTML = `${info.displayPeriod}<sup>e</sup> PÉRIODE`;
+    periodeActuelle.innerHTML = `${info.displayPeriod}<sup>e</sup> PÉRIODE ${info.clock.timeRemaining} <br> ${info.clock.running=false? "en pause":"la rondelle est en jeu!"} <br> entracte: ${info.clock.inIntermission}`;
+    
+    penaltyBox.innerHTML = `${(info.summary.iceSurface.homeTeam.penaltyBox).map(p => p.name.default)} <br> ${(info.summary.iceSurface.awayTeam.penaltyBox).map(p => p.name.default)}`
+
+    // console.log((info.summary.iceSurface.homeTeam.penaltyBox).map(p => p.name.default));
+    //  console.log((info.summary.iceSurface.awayTeam.penaltyBox).map(p => p.name.default));
+
 
     const goalPlays = info.plays.filter(play => play.typeDescKey === "goal");
     const currentGoalCount = goalPlays.length;
@@ -65,6 +72,10 @@ async function displayLiveInfo(info) {
 
         totalGoals = currentGoalCount;
         displayScorers([...scorers.values()]);
+        // console.log(info);
+        //         //ON PEUT AJOUTER LES INTERMISSIONS!!   
+        //.clock.inIntermission
+        //.clock.running
     }
 
 
@@ -92,6 +103,9 @@ function displayScorers() {
             </div>
         `)
         .join("");
+    
+    
+    
 }
 
 
@@ -109,8 +123,8 @@ async function getPlayerById(id) {
 
 
 function run() {
-    getPlayByPLayInfo(2025020270);
-    setInterval(() => getPlayByPLayInfo(2025020270), 5000);
+    getPlayByPLayInfo(2025020285);
+    setInterval(() => getPlayByPLayInfo(2025020285), 5000);
 };
 
 
